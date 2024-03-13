@@ -1,0 +1,50 @@
+services:
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'exampledb'  # データベース名
+      MYSQL_USER: 'user'           # ユーザー名
+      MYSQL_PASSWORD: 'password'   # ユーザーパスワード
+      MYSQL_ROOT_PASSWORD: 'rootpassword'  # rootのパスワード
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - 16686:16686 # UI
+      - 4317:4317
+
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   volumes:
+  #     - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  #   command:
+  #     - '--config.file=/etc/prometheus/prometheus.yml'
+  #   ports:
+  #     - 9090:9090
+
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   ports:
+  #     - 3000:3000
+
+  # otel-collector:
+  #   image: otel/opentelemetry-collector:latest
+  #   volumes:
+  #     - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+  #   command: ["--config=/etc/otel-collector-config.yml"]
+  #   ports:
+  #     - 55680:55680 # OpenTelemetry default port
+
+volumes:
+  db-data:
+secrets:
+  db-password:
+    file: db/password.txt

@@ -17,7 +17,7 @@ Cargo.lock
 # Added by cargo
 
 /target
-
+/src/prisma.rs
 
 # Added by cargo
 #
