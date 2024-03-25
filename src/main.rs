@@ -11,7 +11,6 @@ use crate::prisma::post;
 #[tokio::main]
 async fn main() -> Result<()> {
     dotenvy::dotenv().expect(".env file not found");
-    dbg!(std::env::var("DATABASE_URL").unwrap());
     let client = PrismaClient::_builder()
         .with_url(std::env::var("DATABASE_URL").expect("No DATABASE_URL environment variable"))
         .build()
@@ -20,7 +19,6 @@ async fn main() -> Result<()> {
     // DB同期
     #[cfg(debug_assertions)]
     client._db_push().await?;
-    // ここがちゃんと動作しているかは不明
     #[cfg(not(debug_assertions))]
     client._migrate_deploy().await?;
 
@@ -30,7 +28,7 @@ async fn main() -> Result<()> {
     //     .exec()
     //     .await?;
 
-    dbg!(client.user().find_many(vec![]).exec().await);
+    // dbg!(client.user().find_many(vec![]).exec().await);
     // dbg!("db push");
     // let a = client._db_push().await.unwrap();
     // dbg!(a);

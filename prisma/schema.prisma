@@ -11,6 +11,9 @@ generator client {
 model User {
     id          String  @id
     displayName String
+    test        String
+    test2       String
+    test3       String
 }
 
 model Post {
